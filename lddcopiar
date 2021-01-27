@@ -1,0 +1,20 @@
+#!/bin/sh
+
+tenernombresarchivos(){ # archivo posicion_enlace_simbolico
+	 echo "$(ls -ao $1 | tr -s ' ' | cut -d' ' -f $2)"
+}
+
+dependencias="$(ldd -v "$1" | grep ":" | grep "/" | cut -d$'\t' -f2 | cut -d$':' -f1)"
+echo "$dependencias" | while read archivo ; do
+	nombre_completo="$(tenernombresarchivos $archivo 8)"
+	nombre_simbolico="$(tenernombresarchivos $archivo 10)"
+	echo $nombre_completo
+	if [[ "$nombre_simbolico" != "" ]]; then
+		echo "$(dirname $nombre_completo)/$nombre_simbolico"
+	fi
+done | while read ruta ; do
+	libreria="$(basename /usr/lib64/libsane.so | cut -d "." -f 1)"
+	absoluta="$libreria$(dirname $ruta)"
+	mkdir -pv "$absoluta"
+	cp -Rv $ruta "$absoluta"
+done
