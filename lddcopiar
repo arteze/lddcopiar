@@ -13,7 +13,6 @@ else
 	if [[ "$libs" == "" ]]; then
 		echo "No se encontro la libreria"
 	else
-		echo "$libs"
 		dependencias="$(echo "$libs" | grep ":" | grep "/" | cut -d$'\t' -f2 | cut -d$':' -f1)"
 		echo "$dependencias" | while read archivo; do
 			nombre_completo="$(tenernombresarchivos $archivo 8)"
