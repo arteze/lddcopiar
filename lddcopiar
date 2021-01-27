@@ -27,6 +27,7 @@ else
 			mkdir -pv "$absoluta"
 			cp -Rvf $ruta "$absoluta"
 		done
-		echo "$PWD/$libreria"
+		cd "$libreria"
+		pwd -P
 	fi
 fi
